@@ -26,13 +26,12 @@ public class ProjectService {
     }
 
     public ProjectModel updateProject(Long id, ProjectModel project) {
-        ProjectModel existingProject = getProjectById(id);
-        if (existingProject != null) {
-            existingProject.setName(project.getName());
-            existingProject.setDescription(project.getDescription());
-            return projectRepository.save(existingProject);
+        if (projectRepository.existsById(id)) {
+            project.setId(id);
+            return projectRepository.save(project);
+        } else {
+            return null;
         }
-        return null;
     }
 
     public void deleteProject(Long id) {

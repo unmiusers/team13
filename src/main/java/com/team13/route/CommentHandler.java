@@ -24,9 +24,7 @@ public class CommentHandler {
     public Mono<ServerResponse> getCommentById(ServerRequest request) {
         Long id = Long.valueOf(request.pathVariable("id"));
         CommentModel comment = commentService.getCommentById(id);
-        return comment != null ?
-                ServerResponse.ok().bodyValue(comment) :
-                ServerResponse.notFound().build();
+        return comment != null ? ServerResponse.ok().bodyValue(comment) : ServerResponse.notFound().build();
     }
 
     public Mono<ServerResponse> createComment(ServerRequest request) {
@@ -50,5 +48,11 @@ public class CommentHandler {
         Long id = Long.valueOf(request.pathVariable("id"));
         commentService.deleteComment(id);
         return ServerResponse.ok().build();
+    }
+
+    public Mono<ServerResponse> getCommentsByIssueId(ServerRequest request) {
+        Long issueId = Long.valueOf(request.pathVariable("issueId"));
+        List<CommentModel> comments = commentService.getCommentsByIssueId(issueId);
+        return ServerResponse.ok().bodyValue(comments);
     }
 }

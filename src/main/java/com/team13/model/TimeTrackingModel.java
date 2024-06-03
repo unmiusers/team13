@@ -1,17 +1,19 @@
 package com.team13.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-@Table(name = "timetracking")
 public class TimeTrackingModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String taskName;
     private int hoursSpent;
+    private String userId;
 
     // Getters and Setters
     public Long getId() {
@@ -36,5 +38,13 @@ public class TimeTrackingModel {
 
     public void setHoursSpent(int hoursSpent) {
         this.hoursSpent = hoursSpent;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

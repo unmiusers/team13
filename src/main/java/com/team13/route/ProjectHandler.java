@@ -24,9 +24,7 @@ public class ProjectHandler {
     public Mono<ServerResponse> getProjectById(ServerRequest request) {
         Long id = Long.valueOf(request.pathVariable("id"));
         ProjectModel project = projectService.getProjectById(id);
-        return project != null ?
-                ServerResponse.ok().bodyValue(project) :
-                ServerResponse.notFound().build();
+        return project != null ? ServerResponse.ok().bodyValue(project) : ServerResponse.notFound().build();
     }
 
     public Mono<ServerResponse> createProject(ServerRequest request) {

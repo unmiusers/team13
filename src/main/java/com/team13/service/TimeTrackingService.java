@@ -26,13 +26,12 @@ public class TimeTrackingService {
     }
 
     public TimeTrackingModel updateTimeTracking(Long id, TimeTrackingModel timeTracking) {
-        TimeTrackingModel existingTimeTracking = getTimeTrackingById(id);
-        if (existingTimeTracking != null) {
-            existingTimeTracking.setTaskName(timeTracking.getTaskName());
-            existingTimeTracking.setHoursSpent(timeTracking.getHoursSpent());
-            return timeTrackingRepository.save(existingTimeTracking);
+        if (timeTrackingRepository.existsById(id)) {
+            timeTracking.setId(id);
+            return timeTrackingRepository.save(timeTracking);
+        } else {
+            return null;
         }
-        return null;
     }
 
     public void deleteTimeTracking(Long id) {

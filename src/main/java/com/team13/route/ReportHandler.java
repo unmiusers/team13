@@ -24,9 +24,7 @@ public class ReportHandler {
     public Mono<ServerResponse> getReportById(ServerRequest request) {
         Long id = Long.valueOf(request.pathVariable("id"));
         ReportModel report = reportService.getReportById(id);
-        return report != null ?
-                ServerResponse.ok().bodyValue(report) :
-                ServerResponse.notFound().build();
+        return report != null ? ServerResponse.ok().bodyValue(report) : ServerResponse.notFound().build();
     }
 
     public Mono<ServerResponse> createReport(ServerRequest request) {

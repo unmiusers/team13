@@ -24,14 +24,14 @@ public class IssueHandler {
     public Mono<ServerResponse> getIssueById(ServerRequest request) {
         Long id = Long.valueOf(request.pathVariable("id"));
         IssueModel issue = issueService.getIssueById(id);
-        return issue != null ?
-                ServerResponse.ok().bodyValue(issue) :
-                ServerResponse.notFound().build();
+        return issue != null ? ServerResponse.ok().bodyValue(issue) : ServerResponse.notFound().build();
     }
 
     public Mono<ServerResponse> createIssue(ServerRequest request) {
         Mono<IssueModel> issueMono = request.bodyToMono(IssueModel.class);
         return issueMono.flatMap(issue -> {
+            issue.setStatus("new");
+            issue.setReporter(issue.getCreator());
             IssueModel createdIssue = issueService.createIssue(issue);
             return ServerResponse.ok().bodyValue(createdIssue);
         });
@@ -50,5 +50,23 @@ public class IssueHandler {
         Long id = Long.valueOf(request.pathVariable("id"));
         issueService.deleteIssue(id);
         return ServerResponse.ok().build();
+    }
+
+    public Mono<ServerResponse> getIssuesByStatus(ServerRequest request) {
+        String status = request.pathVariable("status");
+        List<IssueModel> issues = issueService.getIssuesByStatus(status);
+        return ServerResponse.ok().bodyValue(issues);
+    }
+
+    public Mono<ServerResponse> getIssuesByAssignee(ServerRequest request) {
+        String assignee = request.pathVariable("assignee");
+        List<IssueModel> issues = issueService.getIssuesByAssignee(assignee);
+        return ServerResponse.ok().bodyValue(issues);
+    }
+
+    public Mono<ServerResponse> getIssuesByReporter(ServerRequest request) {
+        String reporter = request.pathVariable("reporter");
+        List<IssueModel> issues = issueService.getIssuesByReporter(reporter);
+        return ServerResponse.ok().bodyValue(issues);
     }
 }

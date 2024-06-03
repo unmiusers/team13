@@ -1,72 +1,65 @@
 package com.team13.route;
 
-import com.team13.model.*;
-import com.team13.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-@Component
+@Configuration
 public class RouteHandler {
 
-    @Autowired
-    private IssueService issueService;
-    @Autowired
-    private ProjectService projectService;
-    @Autowired
-    private TimeTrackingService timeTrackingService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private WikiService wikiService;
-    @Autowired
-    private CommentService commentService;
-    @Autowired
-    private NotificationService notificationService;
-    @Autowired
-    private ReportService reportService;
-    @Autowired
-    private VersionService versionService;
-
-    // Issue handlers
-    public Mono<ServerResponse> getAllIssues(ServerRequest request) {
-        List<IssueModel> issues = issueService.getAllIssues();
-        return ServerResponse.ok().bodyValue(issues);
+    @Bean(name = "RouteHandler")
+    public RouterFunction<ServerResponse> route(UserHandler userHandler, ProjectHandler projectHandler,
+                                                IssueHandler issueHandler, CommentHandler commentHandler,
+                                                TimeTrackingHandler timeTrackingHandler, NotificationHandler notificationHandler,
+                                                ReportHandler reportHandler, MilestoneHandler milestoneHandler, VersionHandler versionHandler) {
+        return RouterFunctions.route()
+                .GET("/api/users", userHandler::getAllUsers)
+                .GET("/api/users/{id}", userHandler::getUserById)
+                .POST("/api/users", userHandler::createUser)
+                .PUT("/api/users/{id}", userHandler::updateUser)
+                .DELETE("/api/users/{id}", userHandler::deleteUser)
+                .GET("/api/projects", projectHandler::getAllProjects)
+                .GET("/api/projects/{id}", projectHandler::getProjectById)
+                .POST("/api/projects", projectHandler::createProject)
+                .PUT("/api/projects/{id}", projectHandler::updateProject)
+                .DELETE("/api/projects/{id}", projectHandler::deleteProject)
+                .GET("/api/issues", issueHandler::getAllIssues)
+                .GET("/api/issues/{id}", issueHandler::getIssueById)
+                .POST("/api/issues", issueHandler::createIssue)
+                .PUT("/api/issues/{id}", issueHandler::updateIssue)
+                .DELETE("/api/issues/{id}", issueHandler::deleteIssue)
+                .GET("/api/comments", commentHandler::getAllComments)
+                .GET("/api/comments/{id}", commentHandler::getCommentById)
+                .POST("/api/comments", commentHandler::createComment)
+                .PUT("/api/comments/{id}", commentHandler::updateComment)
+                .DELETE("/api/comments/{id}", commentHandler::deleteComment)
+                .GET("/api/timetracking", timeTrackingHandler::getAllTimeTrackings)
+                .GET("/api/timetracking/{id}", timeTrackingHandler::getTimeTrackingById)
+                .POST("/api/timetracking", timeTrackingHandler::createTimeTracking)
+                .PUT("/api/timetracking/{id}", timeTrackingHandler::updateTimeTracking)
+                .DELETE("/api/timetracking/{id}", timeTrackingHandler::deleteTimeTracking)
+                .GET("/api/notifications", notificationHandler::getAllNotifications)
+                .GET("/api/notifications/{id}", notificationHandler::getNotificationById)
+                .POST("/api/notifications", notificationHandler::createNotification)
+                .PUT("/api/notifications/{id}", notificationHandler::updateNotification)
+                .DELETE("/api/notifications/{id}", notificationHandler::deleteNotification)
+                .GET("/api/reports", reportHandler::getAllReports)
+                .GET("/api/reports/{id}", reportHandler::getReportById)
+                .POST("/api/reports", reportHandler::createReport)
+                .PUT("/api/reports/{id}", reportHandler::updateReport)
+                .DELETE("/api/reports/{id}", reportHandler::deleteReport)
+                .GET("/api/milestones", milestoneHandler::getAllMilestones)
+                .GET("/api/milestones/{id}", milestoneHandler::getMilestoneById)
+                .POST("/api/milestones", milestoneHandler::createMilestone)
+                .PUT("/api/milestones/{id}", milestoneHandler::updateMilestone)
+                .DELETE("/api/milestones/{id}", milestoneHandler::deleteMilestone)
+                .GET("/api/versions", versionHandler::getAllVersions)
+                .GET("/api/versions/{id}", versionHandler::getVersionById)
+                .POST("/api/versions", versionHandler::createVersion)
+                .PUT("/api/versions/{id}", versionHandler::updateVersion)
+                .DELETE("/api/versions/{id}", versionHandler::deleteVersion)
+                .build();
     }
-
-    public Mono<ServerResponse> getIssueById(ServerRequest request) {
-        Long id = Long.valueOf(request.pathVariable("id"));
-        IssueModel issue = issueService.getIssueById(id);
-        return ServerResponse.ok().bodyValue(issue);
-    }
-
-    public Mono<ServerResponse> createIssue(ServerRequest request) {
-        Mono<IssueModel> issueMono = request.bodyToMono(IssueModel.class);
-        return issueMono.flatMap(issue -> {
-            IssueModel createdIssue = issueService.createIssue(issue);
-            return ServerResponse.ok().bodyValue(createdIssue);
-        });
-    }
-
-    public Mono<ServerResponse> updateIssue(ServerRequest request) {
-        Long id = Long.valueOf(request.pathVariable("id"));
-        Mono<IssueModel> issueMono = request.bodyToMono(IssueModel.class);
-        return issueMono.flatMap(issue -> {
-            IssueModel updatedIssue = issueService.updateIssue(id, issue);
-            return ServerResponse.ok().bodyValue(updatedIssue);
-        });
-    }
-
-    public Mono<ServerResponse> deleteIssue(ServerRequest request) {
-        Long id = Long.valueOf(request.pathVariable("id"));
-        issueService.deleteIssue(id);
-        return ServerResponse.ok().build();
-    }
-
-    // Similar handler methods for other entities...
-
 }

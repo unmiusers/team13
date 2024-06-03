@@ -24,9 +24,7 @@ public class TimeTrackingHandler {
     public Mono<ServerResponse> getTimeTrackingById(ServerRequest request) {
         Long id = Long.valueOf(request.pathVariable("id"));
         TimeTrackingModel timeTracking = timeTrackingService.getTimeTrackingById(id);
-        return timeTracking != null ?
-                ServerResponse.ok().bodyValue(timeTracking) :
-                ServerResponse.notFound().build();
+        return timeTracking != null ? ServerResponse.ok().bodyValue(timeTracking) : ServerResponse.notFound().build();
     }
 
     public Mono<ServerResponse> createTimeTracking(ServerRequest request) {

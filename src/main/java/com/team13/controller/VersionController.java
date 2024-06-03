@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/versions")
+@RequestMapping("/api/versions")
 public class VersionController {
 
     @Autowired

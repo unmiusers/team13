@@ -11,9 +11,9 @@ public class CommentModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long issueId;
     private String text;
     private String author;
-    private Long postId;
 
     // Getters and Setters
     public Long getId() {
@@ -22,6 +22,14 @@ public class CommentModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getIssueId() {
+        return issueId;
+    }
+
+    public void setIssueId(Long issueId) {
+        this.issueId = issueId;
     }
 
     public String getText() {
@@ -38,13 +46,5 @@ public class CommentModel {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public Long getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Long postId) {
-        this.postId = postId;
     }
 }

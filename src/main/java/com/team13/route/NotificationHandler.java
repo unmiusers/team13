@@ -24,9 +24,7 @@ public class NotificationHandler {
     public Mono<ServerResponse> getNotificationById(ServerRequest request) {
         Long id = Long.valueOf(request.pathVariable("id"));
         NotificationModel notification = notificationService.getNotificationById(id);
-        return notification != null ?
-                ServerResponse.ok().bodyValue(notification) :
-                ServerResponse.notFound().build();
+        return notification != null ? ServerResponse.ok().bodyValue(notification) : ServerResponse.notFound().build();
     }
 
     public Mono<ServerResponse> createNotification(ServerRequest request) {

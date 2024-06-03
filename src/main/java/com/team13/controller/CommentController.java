@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/api/comments")
 public class CommentController {
 
     @Autowired
@@ -37,5 +37,10 @@ public class CommentController {
     @DeleteMapping("/{id}")
     public void deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
+    }
+
+    @GetMapping("/issue/{issueId}")
+    public List<CommentModel> getCommentsByIssueId(@PathVariable Long issueId) {
+        return commentService.getCommentsByIssueId(issueId);
     }
 }

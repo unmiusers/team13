@@ -26,16 +26,27 @@ public class IssueService {
     }
 
     public IssueModel updateIssue(Long id, IssueModel issue) {
-        IssueModel existingIssue = getIssueById(id);
-        if (existingIssue != null) {
-            existingIssue.setTitle(issue.getTitle());
-            existingIssue.setDescription(issue.getDescription());
-            return issueRepository.save(existingIssue);
+        if (issueRepository.existsById(id)) {
+            issue.setId(id);
+            return issueRepository.save(issue);
+        } else {
+            return null;
         }
-        return null;
     }
 
     public void deleteIssue(Long id) {
         issueRepository.deleteById(id);
+    }
+
+    public List<IssueModel> getIssuesByStatus(String status) {
+        return issueRepository.findByStatus(status);
+    }
+
+    public List<IssueModel> getIssuesByAssignee(String assignee) {
+        return issueRepository.findByAssignee(assignee);
+    }
+
+    public List<IssueModel> getIssuesByReporter(String reporter) {
+        return issueRepository.findByReporter(reporter);
     }
 }

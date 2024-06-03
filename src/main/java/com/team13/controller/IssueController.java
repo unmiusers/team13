@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/issues")
+@RequestMapping("/api/issues")
 public class IssueController {
 
     @Autowired
@@ -26,6 +26,8 @@ public class IssueController {
 
     @PostMapping
     public IssueModel createIssue(@RequestBody IssueModel issue) {
+        issue.setStatus("new");
+        issue.setReporter(issue.getCreator());
         return issueService.createIssue(issue);
     }
 
@@ -37,5 +39,20 @@ public class IssueController {
     @DeleteMapping("/{id}")
     public void deleteIssue(@PathVariable Long id) {
         issueService.deleteIssue(id);
+    }
+
+    @GetMapping("/status/{status}")
+    public List<IssueModel> getIssuesByStatus(@PathVariable String status) {
+        return issueService.getIssuesByStatus(status);
+    }
+
+    @GetMapping("/assigned/{assignee}")
+    public List<IssueModel> getIssuesByAssignee(@PathVariable String assignee) {
+        return issueService.getIssuesByAssignee(assignee);
+    }
+
+    @GetMapping("/reporter/{reporter}")
+    public List<IssueModel> getIssuesByReporter(@PathVariable String reporter) {
+        return issueService.getIssuesByReporter(reporter);
     }
 }

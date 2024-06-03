@@ -24,9 +24,7 @@ public class VersionHandler {
     public Mono<ServerResponse> getVersionById(ServerRequest request) {
         Long id = Long.valueOf(request.pathVariable("id"));
         VersionModel version = versionService.getVersionById(id);
-        return version != null ?
-                ServerResponse.ok().bodyValue(version) :
-                ServerResponse.notFound().build();
+        return version != null ? ServerResponse.ok().bodyValue(version) : ServerResponse.notFound().build();
     }
 
     public Mono<ServerResponse> createVersion(ServerRequest request) {

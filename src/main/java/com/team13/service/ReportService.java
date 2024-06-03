@@ -26,13 +26,12 @@ public class ReportService {
     }
 
     public ReportModel updateReport(Long id, ReportModel report) {
-        ReportModel existingReport = getReportById(id);
-        if (existingReport != null) {
-            existingReport.setTitle(report.getTitle());
-            existingReport.setContent(report.getContent());
-            return reportRepository.save(existingReport);
+        if (reportRepository.existsById(id)) {
+            report.setId(id);
+            return reportRepository.save(report);
+        } else {
+            return null;
         }
-        return null;
     }
 
     public void deleteReport(Long id) {

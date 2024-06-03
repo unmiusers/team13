@@ -24,9 +24,7 @@ public class UserHandler {
     public Mono<ServerResponse> getUserById(ServerRequest request) {
         Long id = Long.valueOf(request.pathVariable("id"));
         UserModel user = userService.getUserById(id);
-        return user != null ?
-                ServerResponse.ok().bodyValue(user) :
-                ServerResponse.notFound().build();
+        return user != null ? ServerResponse.ok().bodyValue(user) : ServerResponse.notFound().build();
     }
 
     public Mono<ServerResponse> createUser(ServerRequest request) {
