@@ -1,0 +1,9 @@
+（翻）
+功能模块：Comment,User,Issue,VersionControl,Report,Project,Notification,TimeTracking,Wiki
+后端文件分类：
+控制器类（Controller）（API层）:包含所有控制器类，定义项目中的所有API，定义HTTP端点。
+实体类（Model）:包含数据模型类
+接口类（Repository）:数据访问层接口，主要用于与数据库进行数据交互，并不直接处理HTTP请求。
+服务类（Service）:业务逻辑层，包含业务逻辑，调用数据访问层以获取和处理数据，由控制器调用以执行业务操作。
+路由配置类（Route）：
+数据库部署工具：MYSQL
